@@ -14,9 +14,9 @@ class roomController extends Controller
 {
 
     public  function registerRoom(){
-
+        $rooms = DB::table('rooms')->get();
         $buildings = DB::table('buildings')->select('*')->get();
-        return view('admin.register_room', compact('buildings'));
+        return view('admin.register_room', compact('buildings','rooms'));
     }
 
     public  function selectBuiding(){
@@ -44,7 +44,7 @@ class roomController extends Controller
         ->select('s.specific_date')
         ->where('r.id', $rooms)
         ->groupBy('s.specific_date')
-        ->havingRaw('COUNT(s.schedule_id) > 3')
+        ->havingRaw('COUNT(s.schedule_id) = 6')
         ->get();
 
 
@@ -55,5 +55,20 @@ class roomController extends Controller
     }
 
 
+    public function getTimeNone(){
+        $date = $_POST['date']; // Ví dụ: 2025-04-02
+        $rooms = $_POST['room_id'];
 
+        $blockedHours = DB::table('shift_times')
+        ->selectRaw('DISTINCT HOUR(start_time) AS hour_start, HOUR(start_time) + 1 AS hour_between, HOUR(end_time) AS hour_end')
+        ->join('schedules', 'shift_times.id', '=', 'schedules.shift_id')
+        ->where('schedules.specific_date', $date)
+        ->where('schedules.room_id', $rooms)
+        ->orderBy('hour_start', 'ASC')->get();
+
+        return response()->json([
+            'success' => true,
+            'blockedHours' => $blockedHours
+        ]);
+    }
 }

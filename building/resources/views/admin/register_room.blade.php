@@ -22,7 +22,7 @@
                     <!-- Thông tin phòng -->
                     <div class="my-3">
                         <label for="building" class="form-label">Tòa nhà:</label>
-                        <select id="building" name="building" class="form-lable" required>
+                        <select id="building" name="building" class="form-lable">
                             <option value="" disabled selected hidden>-Chọn tòa nhà-</option>
                             <!-- Dữ liệu tĩnh, trong thực tế sẽ được backend điền -->
                             @foreach ($buildings as $builder)
@@ -35,36 +35,86 @@
                         <label for="room" class="form-label ">Phòng:</label>
                         <select id="room" name="room_id" class="form-lable" required>
                             <option value="" disabled selected hidden>-Chọn phòng-</option>
+                            @foreach ($rooms as $room)
+                                <option value="{{  $room->id }}">{{ $room->room_name }}</option>
+                            @endforeach
+
+
                         </select>
                     </div>
 
                     <div class="my-3">
-                        <label for="room" class="form-label ">Ngày:</label>
+                        <label for="dateInput" class="form-label ">Ngày:</label>
                         <input type="date" id="dateInput">
                     </div>
 
-                    <!-- Thời gian mượn -->
-                    {{-- <div class="my-3">
-                        <label for="startTime" class="form-label">Thời gian bắt đầu:</label>
-                        <input type="time" class="form-control" id="startTime" name="start_time" required>
-                    </div> --}}
-
-                    {{-- <div class="my-3">
-                        <label for="endTime" class="form-label">Thời gian kết thúc:</label>
-                        <input type="time" class="form-control" id="endTime" name="end_time" required>
-                    </div> --}}
 
                     <!-- Input chọn thời gian -->
 
+                    <div class="row">
+                        <!-- Giờ Bắt Đầu -->
+                        <div class="col-md-3">
+                            <p class="fw-bold pb-1">Giờ Bắt Đầu</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="timeInputStartHour" class="form-label">Giờ:</label>
+                                    <select class="form-lable" id="timeInputStartHour">
+                                        <option value="">-Chọn Giờ-</option>
+                                        @for ($i = 7; $i < 21; $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="timeInputStartMinute" class="form-label">Phút:</label>
+                                    <select class="form-lable" id="timeInputStartMinute">
+                                        @for ($i = 0; $i < 60; $i+=5)  <!-- Bước 5 phút để dễ chọn -->
+                                            <option value="{{ $i }}">{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-1">
 
+                        </div>
+                        <!-- Giờ Kết Thúc -->
+                        <div class="col-md-3">
+                            <p class="fw-bold pb-1">Giờ Kết Thúc</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="timeInputEndHour" class="form-label">Giờ:</label>
+                                    <select class="form-lable" id="timeInputEndHour">
+                                        @for ($i = 7; $i < 21; $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="timeInputEndMinute" class="form-label">Phút:</label>
+                                    <select class="form-lable" id="timeInputEndMinute">
+                                        @for ($i = 0; $i < 60; $i+=5)
+                                            <option value="{{ $i }}">{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary">Tình trạng sử dụng phòng</button>
+                        </div>
+                    </div>
 
-
-
-
-
-
-
-
+                    {{-- <div class="">
+                        <div class="my-3">
+                            <label for="timeInputStart" class="form-label">Giờ bắt đầu:</label>
+                            <input type="time" id="timeInputStart" class="form-control">
+                        </div>
+                        <div class="my-3">
+                            <label for="timeInputEnd" class="form-label">Giờ kết thúc:</label>
+                            <input type="time" id="timeInputEnd" class="form-control">
+                        </div>
+                    </div> --}}
 
                     <!-- Lý do mượn -->
                     <div class="my-3">
@@ -103,14 +153,52 @@
     @endsection
 
 @push('scripts')
-    <script>
+<script>
+$(document).ready(function () {
+    const buildingSelect = $("#building");
+    const roomSelect = $("#room");
+    const dateInput = $("#dateInput");
+    const timeInputStart = $("#timeInputStart");
+
+    roomSelect.change(function () {
+        if (!buildingSelect.val()) {
+            alert("Vui lòng chọn tòa trước khi chọn phòng!");
+            roomSelect.val(""); // Reset phòng nếu chưa chọn ngày
+        }
+    });
+
+    dateInput.change(function () {
+        if (!roomSelect.val()) {
+            alert("Vui lòng chọn phòng trước khi chọn ngày!");
+            $(this).val(""); // Reset ngày nếu chưa chọn tòa
+        }
+    });
+
+    timeInputStart.focus(function () {
+        if (!$dateInput.val()) {
+            alert("Vui lòng chọn ngày trước khi chọn giờ!");
+            $(this).blur(); // Mất focus input giờ
+        }
+    });
 
 
+    //Cấu hình flatpickr ngày
+    flatpickr("#dateInput", {
+        dateFormat: "d-m-Y",
+        minDate: "today"
+    });
+
+
+});
+
+
+
+    //Xử lý khi thực hiện chọn tòa
     $('#building').change(function() {
         // Lấy giá trị được chọn
         var buildingId = $(this).val();
         // console.log(buildingId);
-        // Kiểm tra nếu giá trị không rỗng
+
         if(buildingId) {
             $.ajax({
                 url: '/admin/selectBuiding', // Thay bằng URL endpoint của bạn
@@ -122,7 +210,7 @@
                 success: function(response) {
                     // Xử lý khi thành công
                     // console.log('Gửi thành công:', response.rooms);
-                    // Có thể thêm code để cập nhật giao diện
+
                     $('#room').html('<option value="" disabled selected hidden>-Chọn phòng-</option>');
                     $.each(response.rooms, function(key, value) {
                         $('#room').append('<option value="' + value.id + '">' + value.room_name + '</option>');
@@ -137,28 +225,41 @@
     });
 
 
-    //xử lý khi chọn phòng
+
+
+    //xử lý khi chọn phòng thì hiện ra ngày bị chặn
     $('#room').change(function() {
-        // Lấy giá trị được chọn
         var roomsId = $(this).val();
+
         console.log(roomsId);
-        // Kiểm tra nếu giá trị không rỗng
-        if(roomsId) {
+
+        if (roomsId) {
             $.ajax({
                 url: '/admin/getDateRoom',
-                type: 'POST', // Hoặc GET tùy yêu cầu
+                type: 'POST',
                 data: {
                     rooms_id: roomsId,
-                    _token: '{{ csrf_token() }}' // Nếu dùng Laravel cần token CSRF
+                    _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    // Xử lý khi thành công
                     console.log('Gửi thành công:', response.dates);
-                        //chặn ngày đã hết lịch
+                    // Cập nhật danh sách ngày không hợp lệ
+                    let dateNone = response.dates.map(item => item.specific_date);
+                    let formattedDateNone = dateNone.map(date => {
+                        let parts = date.split("-"); // Tách năm, tháng, ngày
+                        return `${parts[2]}-${parts[1]}-${parts[0]}`; // Sắp xếp lại thành DD-MM-YYYY
+                    });
 
+                    console.log("Ngày bị vô hiệu hóa:", dateNone);
+
+                    // Cập nhật flatpickr với danh sách ngày mới
+                    flatpickr("#dateInput", {
+                        dateFormat: "d-m-Y",
+                        disable: formattedDateNone,
+                        minDate: "today" //chặn ngày trong quá khứ
+                    });
                 },
                 error: function(xhr, status, error) {
-                    // Xử lý khi lỗi
                     console.log('Lỗi:', error);
                 }
             });
@@ -166,22 +267,61 @@
     });
 
 
+    //xử lý khi chọn ngày thì hiện ra giờ bị chặn
+    $('#dateInput').change(function() {
+    var date = $(this).val();
+    var room_id = $('#room').val();
+
+    var parts = date.split("-"); // Tách chuỗi thành mảng
+    var formattedDate = parts[2] + "-" + parts[1] + "-" + parts[0];
+    console.log(formattedDate, room_id);
+
+    if (date) {
+        $.ajax({
+            url: '/admin/getTimeNone',
+            type: 'POST',
+            data: {
+                date: formattedDate,
+                room_id: room_id,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                console.log('Gửi thành công:', response.blockedHours);
+
+                // Làm rỗng danh sách giờ trước khi thêm mới
+                var selectBox = $('#timeInputStartHour');
+                selectBox.empty();
 
 
-    document.addEventListener("DOMContentLoaded", function () {
+                // Tạo danh sách giờ chẵn từ 7 đến 20
+                for (let i = 7; i < 21; i++) {
+                    let isBlocked = false;
 
-        let disabledDatesRaw = ["2025-3-30", "2025-3-31", "2025-4-1", "2025-12-1"]; // Ngày không chuẩn
-        let disabledDates = disabledDatesRaw.map(date => {
-            let parts = date.split("-");
-            let formattedDate = `${parts[0]}-${parts[1].padStart(2, '0')}-${parts[2].padStart(2, '0')}`;
-            return formattedDate;
+                    // Kiểm tra xem giờ này có bị chặn không
+                    $.each(response.blockedHours, function(key, value) {
+
+                        if (value.hour_start === i || value.hour_end === i || value.hour_between === i) {
+                            isBlocked = true;
+                            return isBlocked; // Thoát khỏi vòng lặp each khi tìm thấy giá trị trùng
+                        }
+
+
+                    });
+
+                    if (isBlocked) {
+                        selectBox.append('<option value="" disabled hidden>' + i + '</option>');
+                    } else {
+                        selectBox.append('<option value="' + i + '">' + i + '</option>');
+                    }
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log('Lỗi:', error);
+            }
         });
+    }
+});
 
-        flatpickr("#dateInput", {
-            dateFormat: "Y-m-d",
-            disable: disabledDates // Sử dụng danh sách đã chuẩn hóa
-        });
-        });
 
 
 </script>

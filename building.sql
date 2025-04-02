@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 31, 2025 lúc 08:18 AM
+-- Thời gian đã tạo: Th4 02, 2025 lúc 05:46 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -531,10 +531,10 @@ CREATE TABLE `rooms` (
 --
 
 INSERT INTO `rooms` (`id`, `room_name`, `building_id`, `status`, `description`) VALUES
-(1, 'PD101', 2, 'available', 'tòa này của cao đẳng'),
+(1, 'PD101', 2, 'available', 'phòng này của cao đẳng'),
 (2, 'PD102', 2, 'available', 'phòng này của cao đẳng'),
-(3, 'FD201', 1, 'available', NULL),
-(4, 'FD201', 1, 'available', NULL);
+(3, 'FD201', 1, 'available', 'phòng này của phổ cao'),
+(4, 'FD201', 1, 'available', 'phòng này của phổ cao');
 
 -- --------------------------------------------------------
 
@@ -557,12 +557,12 @@ CREATE TABLE `schedules` (
 --
 
 INSERT INTO `schedules` (`schedule_id`, `room_id`, `shift_id`, `specific_date`, `lecturer`, `created_by`, `created_at`) VALUES
-(3, 2, 3, '2025-03-30', 'Hà Minh Thủy', 1, '2025-03-30 15:55:25'),
-(4, 2, 4, '2025-03-30', 'Hà Minh Thủy', 1, '2025-03-30 15:57:02'),
-(5, 2, 1, '2025-03-30', 'Hà Minh Thủy', 1, '2025-03-30 16:28:28'),
-(6, 2, 2, '2025-03-30', 'Hà Minh Thủy', 1, '2025-03-30 16:28:28'),
-(7, 2, 3, '2025-03-31', 'Lê Thị Hồng Ngọc', 1, '2025-03-30 16:29:52'),
-(8, 1, 2, '2025-04-01', 'Minh', 1, '2025-03-30 17:34:23');
+(3, 2, 3, '2025-04-02', 'Hà Minh Thủy', 1, '2025-03-30 15:55:25'),
+(4, 2, 4, '2025-04-02', 'Hà Minh Thủy', 1, '2025-03-30 15:57:02'),
+(5, 2, 1, '2025-04-02', 'Hà Minh Thủy', 1, '2025-03-30 16:28:28'),
+(6, 2, 6, '2025-04-02', 'Hà Minh Thủy', 1, '2025-03-30 16:28:28'),
+(7, 1, 3, '2025-04-02', 'Lê Thị Hồng Ngọc', 1, '2025-03-30 16:29:52'),
+(8, 2, 5, '2025-04-02', 'Minh', 1, '2025-03-30 17:34:23');
 
 -- --------------------------------------------------------
 
@@ -584,7 +584,10 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('YbElMiYWTcwGFHXLWLWT4vgT26JjoJSxWjkH7HAi', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoiSWVLUmFRcGpzeU1rV1JlT3ZhdUFxSEw3Yk9CQWI2N0tBdThKZ0tPdCI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQwOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYWRtaW4vcmVnaXN0ZXJSb29tIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NDMzMTk2NTA7fXM6MjI6IlBIUERFQlVHQkFSX1NUQUNLX0RBVEEiO2E6MDp7fX0=', 1743332922);
+('FJxtLvKY0eVETVpLqsFDwWlN3khk5vWye9e6frLJ', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiNjVoaUxtTVJSQkUxNk5jVjdRREppMTRvZ0xxdWtHd2tCbjhNMGt3SyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9yZWdpc3RlclJvb20iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO3M6NDoiYXV0aCI7YToxOntzOjIxOiJwYXNzd29yZF9jb25maXJtZWRfYXQiO2k6MTc0MzYwNjgwNTt9czoyMjoiUEhQREVCVUdCQVJfU1RBQ0tfREFUQSI7YTowOnt9fQ==', 1743607913),
+('K2rGfFJbdG5RITyhTawNPlDTynVPmFXfl99uTwX3', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiTjBwTWRDNjNpSENsdmxxTFkxSFlMSTBldlhLWGRqbFpKSUMyOUV2TiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9yZWdpc3RlclJvb20iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO3M6NDoiYXV0aCI7YToxOntzOjIxOiJwYXNzd29yZF9jb25maXJtZWRfYXQiO2k6MTc0MzU3OTE2NDt9czoyMjoiUEhQREVCVUdCQVJfU1RBQ0tfREFUQSI7YTowOnt9fQ==', 1743584896),
+('n3fqpI3ooUhyr7JMJxJYOx8hmAQiyJbfyczhsWNn', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoiR1VZNHVzQmRodzlOOWx4ZEhMN1RBWmlMMEx3bTVLa09paFFoN25jWCI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQwOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYWRtaW4vcmVnaXN0ZXJSb29tIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NDM1ODQ5MjQ7fXM6MjI6IlBIUERFQlVHQkFSX1NUQUNLX0RBVEEiO2E6MDp7fX0=', 1743588050),
+('yaCBwTPmaIjOxSnZtAq5qpC1UB3JWMU2EOTU1gcd', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiTEkyWTZIQ0VVMkFmQ2duSzdaSDNJUTRkQ2JQTlRsd0JIVUhZaFY5ZCI7czoyMjoiUEhQREVCVUdCQVJfU1RBQ0tfREFUQSI7YTowOnt9czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1743606785);
 
 -- --------------------------------------------------------
 
@@ -607,7 +610,15 @@ INSERT INTO `shift_times` (`id`, `shift_name`, `start_time`, `end_time`) VALUES
 (1, 'Ca 1 - Cao đẳng', '07:15:00', '09:15:00'),
 (2, 'Ca 2 - Cao đẳng', '09:25:00', '11:25:00'),
 (3, 'Ca 3 - Cao đẳng', '12:00:00', '14:00:00'),
-(4, 'Ca 4 - Cao đẳng', '14:00:00', '16:10:00');
+(4, 'Ca 4 - Cao đẳng', '14:10:00', '16:10:00'),
+(5, 'Ca 5 - Cao đẳng', '16:20:00', '18:20:00'),
+(6, 'Ca 6 - Cao đẳng', '18:30:00', '20:30:00'),
+(7, 'Ca 1 - Phổ Cao', '07:25:00', '09:25:00'),
+(8, 'Ca 2 - Phổ Cao', '09:35:00', '11:35:00'),
+(9, 'Ca 3 - Phổ Cao', '12:10:00', '14:10:00'),
+(10, 'Ca 4 - Phổ Cao', '14:20:00', '16:20:00'),
+(11, 'Ca 5 - Phổ Cao', '16:30:00', '18:30:00'),
+(12, 'Ca 6 - Phổ Cao', '18:40:00', '20:40:00');
 
 -- --------------------------------------------------------
 
@@ -1025,7 +1036,7 @@ ALTER TABLE `schedules`
 -- AUTO_INCREMENT cho bảng `shift_times`
 --
 ALTER TABLE `shift_times`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT cho bảng `slides`

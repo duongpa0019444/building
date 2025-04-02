@@ -86,8 +86,7 @@ Route::middleware(['auth', AuthAdmin::class])->group(function() {
     Route::get('/admin/registerRoom', [roomController::class, 'registerRoom'])->name('admin.registerRoom');
     Route::post('/admin/selectBuiding', [roomController::class, 'selectBuiding'])->name('admin.selectBuiding');
     Route::post('/admin/getDateRoom', [roomController::class, 'getDateRoom'])->name('admin.getDateRoom');
-
-
+    Route::post('/admin/getTimeNone', [roomController::class, 'getTimeNone'])->name('admin.getTimeNone');
 
     //User
     Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
